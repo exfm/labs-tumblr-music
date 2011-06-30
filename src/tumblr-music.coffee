@@ -48,7 +48,8 @@ class TumblrMusic
         $('body').append '<h1 id="tumblelog"/>', '<div id="music"/>', '<div id="loader" />'
         this.el = $('#music')
 
-        this._watch_interval = setInterval this._check_fetch, 200
+        cb = () => this._check_fetch
+        this._watch_interval = setInterval(cb, 200)
 
         this._fetch()
     

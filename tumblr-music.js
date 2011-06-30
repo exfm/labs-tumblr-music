@@ -48,9 +48,13 @@
       return document.getElementsByTagName('head')[0].appendChild(tag);
     };
     TumblrMusic.prototype._init = function() {
+      var cb;
       $('body').append('<h1 id="tumblelog"/>', '<div id="music"/>', '<div id="loader" />');
       this.el = $('#music');
-      this._watch_interval = setInterval(this._check_fetch, 200);
+      cb = __bind(function() {
+        return this._check_fetch;
+      }, this);
+      this._watch_interval = setInterval(cb, 200);
       return this._fetch();
     };
     TumblrMusic.prototype._check_fetch = function() {
