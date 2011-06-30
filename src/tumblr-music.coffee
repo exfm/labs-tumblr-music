@@ -12,9 +12,9 @@ per_page = 20
 tag = ""
 
 POST_TEMPLATE = """
-<div class="post" id="post-<%= id %>">
+<div class="post" id="post-<%= post['id'] %>">
     <div class="player">
-        <%= post.audio-player %>
+        <%= post['audio-player'] %>
     </div>
     <% if (post['audio-caption']){ %>
     <div class="caption">

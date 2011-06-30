@@ -9,7 +9,7 @@
   GOOGLE_JQUERY_SRC = "https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js";
   per_page = 20;
   tag = "";
-  POST_TEMPLATE = "<div class=\"post\" id=\"post-<%= id %>\">\n    <div class=\"player\">\n        <%= post.audio-player %>\n    </div>\n    <% if (post['audio-caption']){ %>\n    <div class=\"caption\">\n        %laquo;<%= post['audio-caption'] %>&raquo;\n    </div>\n    <% } %>\n    <div class=\"meta\">\n        <span class=\"title\"><%= post['id3-title'] %></span> by <span class=\"artist\"><%= post['id3-title'] %></span>\n    </div>\n</div>";
+  POST_TEMPLATE = "<div class=\"post\" id=\"post-<%= post['id'] %>\">\n    <div class=\"player\">\n        <%= post['audio-player'] %>\n    </div>\n    <% if (post['audio-caption']){ %>\n    <div class=\"caption\">\n        %laquo;<%= post['audio-caption'] %>&raquo;\n    </div>\n    <% } %>\n    <div class=\"meta\">\n        <span class=\"title\"><%= post['id3-title'] %></span> by <span class=\"artist\"><%= post['id3-title'] %></span>\n    </div>\n</div>";
   TumblrMusic = (function() {
     function TumblrMusic(per_page, tag) {
       if (tag == null) {
