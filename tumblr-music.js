@@ -79,7 +79,7 @@
       return (b - 40 < $('#loader').height()) < 0;
     };
     TumblrMusic.prototype._fetch = function() {
-      var json_data, opts;
+      var opts;
       opts = {
         type: "audio",
         format: "json",
@@ -94,12 +94,15 @@
       }
       this.show_loader();
       if (this.remote_tumblr) {
-        this.xhr = $.getJSON("" + this.remote_tumblr + "/api/read", opts, __bind(function(data) {}, this));
-        json_data = JSON.parse(data.substr(22, data.length - 24));
-        this._on_posts(json_data);
-        this.xhr = null;
+        this.xhr = $.getJSON("" + this.remote_tumblr + "/api/read", opts, __bind(function(data) {
+          var json_data;
+          json_data = JSON.parse(data.substr(22, data.length - 24));
+          this._on_posts(json_data);
+          return this.xhr = null;
+        }, this));
       } else {
         this.xhr = $.getJSON('/api/read', opts, __bind(function(data) {
+          var json_data;
           json_data = JSON.parse(data.substr(22, data.length - 24));
           this._on_posts(json_data);
           return this.xhr = null;

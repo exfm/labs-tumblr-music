@@ -81,7 +81,7 @@ class TumblrMusic
         
         this.show_loader()
         if this.remote_tumblr
-                this.xhr = $.getJSON "#{this.remote_tumblr}/api/read", opts, (data) =>
+            this.xhr = $.getJSON "#{this.remote_tumblr}/api/read", opts, (data) =>
                 json_data = JSON.parse(data.substr(22, (data.length - 24)))
                 this._on_posts(json_data)
                 this.xhr = null
