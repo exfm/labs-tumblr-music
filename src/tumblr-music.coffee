@@ -27,7 +27,7 @@ POST_TEMPLATE = """
 </div>"""
 
 class TumblrMusic
-    constructor: (per_page, tag=null) ->
+    constructor: (per_page, tag=null, tpl=null) ->
         this.per_page = per_page
         this.tag = tag
         this.xhr = null
@@ -37,6 +37,7 @@ class TumblrMusic
         this._watch_interval = null
 
         this._all_posts = []
+        this._tpl = if tpl then tpl else POST_TEMPLATE
 
         if $? then this._init() else this._load_jquery()
 
@@ -94,10 +95,10 @@ class TumblrMusic
             this._debug(xhr, status, thrown)
     
     _on_posts: (json_data) ->
-        if not this._post_tpl?
-            this._post_tpl = _template POST_TEMPLATE
+        this._post_tpl = _template(this._tpl) if not this._post_tpl?
 
         document.title = json_data.tumblelog.title
+
         $('#tumblelog').html(json_data.tumblelog.title).show()
         
         new_html = ''
@@ -113,14 +114,24 @@ class TumblrMusic
             clearInterval this._watch_interval
         else
             this.offset += json_data.posts.length
+
+    rerender: (tpl=null) ->
+        this._tpl = tpl if tpl
+        
+        this._post_tpl = _template(this._tpl)
+
+        this.el.html('')
+        for post in json_data.posts
+            new_html += this._post_tpl post:post
+            this._all_posts.push(post)
+        
+        this.el.append new_html
             
     show_loader: (message='Loading...', class_name='loading') ->
         $('#loader').html(message).addClass(class_name).show()
         
     hide_loader: () ->
         $('#loader').hide()
-
-
 
 # export
 window.TumblrMusic = TumblrMusic

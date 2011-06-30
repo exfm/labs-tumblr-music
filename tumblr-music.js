@@ -11,9 +11,12 @@
   tag = "";
   POST_TEMPLATE = "<div class=\"post\" id=\"post-<%= post['id'] %>\">\n    <div class=\"player\">\n        <%= post['audio-player'] %>\n    </div>\n    <% if (post['audio-caption']){ %>\n    <div class=\"caption\">\n        <%= post['audio-caption'] %>\n    </div>\n    <% } %>\n    <div class=\"meta\">\n        <span class=\"title\"><%= post['id3-title'] %></span> by <span class=\"artist\"><%= post['id3-title'] %></span>\n    </div>\n</div>";
   TumblrMusic = (function() {
-    function TumblrMusic(per_page, tag) {
+    function TumblrMusic(per_page, tag, tpl) {
       if (tag == null) {
         tag = null;
+      }
+      if (tpl == null) {
+        tpl = null;
       }
       this.per_page = per_page;
       this.tag = tag;
@@ -23,6 +26,7 @@
       this.has_more_posts = true;
       this._watch_interval = null;
       this._all_posts = [];
+      this._tpl = tpl ? tpl : POST_TEMPLATE;
       if (typeof $ !== "undefined" && $ !== null) {
         this._init();
       } else {
@@ -95,7 +99,7 @@
     TumblrMusic.prototype._on_posts = function(json_data) {
       var new_html, post, _i, _len, _ref;
       if (!(this._post_tpl != null)) {
-        this._post_tpl = _template(POST_TEMPLATE);
+        this._post_tpl = _template(this._tpl);
       }
       document.title = json_data.tumblelog.title;
       $('#tumblelog').html(json_data.tumblelog.title).show();
@@ -116,6 +120,26 @@
       } else {
         return this.offset += json_data.posts.length;
       }
+    };
+    TumblrMusic.prototype.rerender = function(tpl) {
+      var post, _i, _len, _ref;
+      if (tpl == null) {
+        tpl = null;
+      }
+      if (tpl) {
+        this._tpl = tpl;
+      }
+      this._post_tpl = _template(this._tpl);
+      this.el.html('');
+      _ref = json_data.posts;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        post = _ref[_i];
+        new_html += this._post_tpl({
+          post: post
+        });
+        this._all_posts.push(post);
+      }
+      return this.el.append(new_html);
     };
     TumblrMusic.prototype.show_loader = function(message, class_name) {
       if (message == null) {
