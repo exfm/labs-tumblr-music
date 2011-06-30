@@ -97,10 +97,8 @@
       if (!(this._post_tpl != null)) {
         this._post_tpl = _template(POST_TEMPLATE);
       }
-      if (!$('#tumblelog').is(':visible')) {
-        document.title = json_data.tumblelog.title;
-        $('#tumblelog').html(json_data.tumblelog.title).show();
-      }
+      document.title = json_data.tumblelog.title;
+      $('#tumblelog').html(json_data.tumblelog.title).show();
       new_html = '';
       this._last_json = json_data;
       _ref = json_data.posts;

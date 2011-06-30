@@ -97,9 +97,8 @@ class TumblrMusic
         if not this._post_tpl?
             this._post_tpl = _template POST_TEMPLATE
 
-        if not $('#tumblelog').is ':visible'
-            document.title = json_data.tumblelog.title
-            $('#tumblelog').html(json_data.tumblelog.title).show()
+        document.title = json_data.tumblelog.title
+        $('#tumblelog').html(json_data.tumblelog.title).show()
         
         new_html = ''
         this._last_json = json_data
