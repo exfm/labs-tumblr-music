@@ -21,12 +21,9 @@
     <% } %>\
 </div>';
   TumblrMusic = (function() {
-    function TumblrMusic(per_page, tag, remote_tumblr) {
+    function TumblrMusic(per_page, tag) {
       if (tag == null) {
         tag = null;
-      }
-      if (remote_tumblr == null) {
-        remote_tumblr = null;
       }
       this.per_page = per_page;
       this.tag = tag;
@@ -34,7 +31,6 @@
       this.offset = 0;
       this.el = null;
       this.has_more_posts = true;
-      this.remote_tumblr = remote_tumblr;
       this._watch_interval = null;
       if (typeof $ !== "undefined" && $ !== null) {
         this._init();
@@ -89,22 +85,16 @@
       if (this.tag) {
         opts.tagged = this.tag;
       }
-      this.show_loader();
-      if (this.remote_tumblr) {
-        this.xhr = $.getJSON("" + this.remote_tumblr + "/api/read", opts, __bind(function(data) {
-          var json_data;
-          json_data = JSON.parse(data.substr(22, data.length - 24));
-          this._on_posts(json_data);
-          return this.xhr = null;
-        }, this));
-      } else {
-        this.xhr = $.getJSON('/api/read', opts, __bind(function(data) {
-          var json_data;
-          json_data = JSON.parse(data.substr(22, data.length - 24));
-          this._on_posts(json_data);
-          return this.xhr = null;
-        }, this));
+      if (this.xhr !== null) {
+        this.xhr.abort();
       }
+      this.show_loader();
+      this.xhr = $.get('/api/read', opts, __bind(function(data) {
+        var json_data;
+        json_data = JSON.parse(data.substr(22, data.length - 24));
+        this._on_posts(json_data);
+        return this.xhr = null;
+      }, this));
       return this.xhr.error(__bind(function(xhr, status, thrown) {
         this.show_loader('Problemas :(', 'error');
         return this._debug(xhr, status, thrown);

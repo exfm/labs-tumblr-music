@@ -24,15 +24,13 @@ POST_TEMPLATE = '
 </div>'
 
 class TumblrMusic
-    constructor: (per_page, tag=null, remote_tumblr=null) ->
+    constructor: (per_page, tag=null) ->
         this.per_page = per_page
         this.tag = tag
         this.xhr = null
         this.offset = 0
         this.el = null
         this.has_more_posts = true
-        this.remote_tumblr = remote_tumblr
-
         this._watch_interval = null
 
         if $? then this._init() else this._load_jquery()
@@ -76,20 +74,14 @@ class TumblrMusic
         if this.tag
             opts.tagged = this.tag
         
-        # if this.xhr isnt null
-        #     this.xhr.abort()
+        if this.xhr isnt null
+            this.xhr.abort()
         
         this.show_loader()
-        if this.remote_tumblr
-            this.xhr = $.getJSON "#{this.remote_tumblr}/api/read", opts, (data) =>
-                json_data = JSON.parse(data.substr(22, (data.length - 24)))
-                this._on_posts(json_data)
-                this.xhr = null
-        else
-            this.xhr = $.getJSON '/api/read', opts, (data) =>
-                json_data = JSON.parse(data.substr(22, (data.length - 24)))
-                this._on_posts(json_data)
-                this.xhr = null
+        this.xhr = $.get '/api/read', opts, (data) =>
+            json_data = JSON.parse(data.substr(22, (data.length - 24)))
+            this._on_posts(json_data)
+            this.xhr = null
         
         this.xhr.error (xhr, status, thrown) =>
             this.show_loader('Problemas :(', 'error')
