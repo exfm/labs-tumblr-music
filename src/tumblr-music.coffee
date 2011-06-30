@@ -62,7 +62,8 @@ class TumblrMusic
         
         _template(this._tpl) if not this._post_tpl?
 
-        this._post_tpl = if tpl then $(tpl).html() else POST_TEMPLATE
+        _ = if this._tpl then $(this._tpl).html() else POST_TEMPLATE
+        this._post_tpl = _template _
 
         this._fetch()
     
@@ -118,7 +119,7 @@ class TumblrMusic
             this.offset += json_data.posts.length
 
     rerender: (tpl=null) ->
-        this._tpl = $(tpl).html() if tpl
+        this._tpl = _template($(tpl).html()) if tpl
         
         this._post_tpl = _template(this._tpl)
 

@@ -50,7 +50,7 @@
       return document.getElementsByTagName('head')[0].appendChild(tag);
     };
     TumblrMusic.prototype._init = function() {
-      var cb;
+      var cb, _;
       $('body').append('<h1 id="tumblelog"/>', '<div id="music"/>', '<div id="loader" />');
       this.el = $('#music');
       cb = __bind(function() {
@@ -60,7 +60,8 @@
       if (!(this._post_tpl != null)) {
         _template(this._tpl);
       }
-      this._post_tpl = tpl ? $(tpl).html() : POST_TEMPLATE;
+      _ = this._tpl ? $(this._tpl).html() : POST_TEMPLATE;
+      this._post_tpl = _template(_);
       return this._fetch();
     };
     TumblrMusic.prototype._check_fetch = function() {
@@ -128,7 +129,7 @@
         tpl = null;
       }
       if (tpl) {
-        this._tpl = $(tpl).html();
+        this._tpl = _template($(tpl).html());
       }
       this._post_tpl = _template(this._tpl);
       this.el.html('');
