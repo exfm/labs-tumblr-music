@@ -11,9 +11,6 @@
   tag = "";
   POST_TEMPLATE = '\
 <div class="post" id="post-<%= id %>">\
-    <div class="player">\
-        <%= audio-player %>\
-    </div>\
     <% if (caption){ %>\
     <div class="caption">\
         %laquo;<%= caption %>&raquo;\
@@ -110,6 +107,7 @@
         $('#tumblelog').html(json_data.tumblelog.title).show();
       }
       new_html = '';
+      this._last_json = json_data;
       _ref = json_data.posts;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         post = _ref[_i];

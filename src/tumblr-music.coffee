@@ -13,9 +13,6 @@ tag = ""
 
 POST_TEMPLATE = '
 <div class="post" id="post-<%= id %>">
-    <div class="player">
-        <%= audio-player %>
-    </div>
     <% if (caption){ %>
     <div class="caption">
         %laquo;<%= caption %>&raquo;
@@ -97,6 +94,7 @@ class TumblrMusic
             $('#tumblelog').html(json_data.tumblelog.title).show()
         
         new_html = ''
+        this._last_json = json_data
         for post in json_data.posts
             this._debug post
             new_html += this._post_tpl post
