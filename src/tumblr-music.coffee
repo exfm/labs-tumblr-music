@@ -18,7 +18,7 @@ POST_TEMPLATE = """
     </div>
     <% if (post['audio-caption']){ %>
     <div class="caption">
-        &#8220;<%= post['audio-caption'] %>&#8221
+        <%= post['audio-caption'] %>
     </div>
     <% } %>
     <div class="meta">
@@ -36,8 +36,10 @@ class TumblrMusic
         this.has_more_posts = true
         this._watch_interval = null
 
+        this._all_posts = []
+
         if $? then this._init() else this._load_jquery()
-    
+
     _debug: (what...) ->
         if console and console.log?
             console.log what
@@ -103,6 +105,7 @@ class TumblrMusic
         this._last_json = json_data
         for post in json_data.posts
             new_html += this._post_tpl post:post
+            this._all_posts.push(post)
 
         this.el.append new_html
 
