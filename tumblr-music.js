@@ -26,7 +26,7 @@
       this.has_more_posts = true;
       this._watch_interval = null;
       this._all_posts = [];
-      this._tpl = tpl ? tpl : POST_TEMPLATE;
+      this._tpl = tpl;
       if (typeof $ !== "undefined" && $ !== null) {
         this._init();
       } else {
@@ -57,6 +57,10 @@
         return this._check_fetch;
       }, this);
       this._watch_interval = setInterval(cb, 200);
+      if (!(this._post_tpl != null)) {
+        _template(this._tpl);
+      }
+      this._post_tpl = tpl ? $(tpl).html() : POST_TEMPLATE;
       return this._fetch();
     };
     TumblrMusic.prototype._check_fetch = function() {
@@ -98,9 +102,6 @@
     };
     TumblrMusic.prototype._on_posts = function(json_data) {
       var new_html, post, _i, _len, _ref;
-      if (!(this._post_tpl != null)) {
-        this._post_tpl = _template(this._tpl);
-      }
       document.title = json_data.tumblelog.title;
       $('#tumblelog').html(json_data.tumblelog.title).show();
       new_html = '';
@@ -127,7 +128,7 @@
         tpl = null;
       }
       if (tpl) {
-        this._tpl = tpl;
+        this._tpl = $(tpl).html();
       }
       this._post_tpl = _template(this._tpl);
       this.el.html('');

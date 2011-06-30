@@ -37,7 +37,7 @@ class TumblrMusic
         this._watch_interval = null
 
         this._all_posts = []
-        this._tpl = if tpl then tpl else POST_TEMPLATE
+        this._tpl = tpl
 
         if $? then this._init() else this._load_jquery()
 
@@ -59,6 +59,10 @@ class TumblrMusic
 
         cb = () => this._check_fetch
         this._watch_interval = setInterval(cb, 200)
+        
+        _template(this._tpl) if not this._post_tpl?
+
+        this._post_tpl = if tpl then $(tpl).html() else POST_TEMPLATE
 
         this._fetch()
     
@@ -95,8 +99,6 @@ class TumblrMusic
             this._debug(xhr, status, thrown)
     
     _on_posts: (json_data) ->
-        this._post_tpl = _template(this._tpl) if not this._post_tpl?
-
         document.title = json_data.tumblelog.title
 
         $('#tumblelog').html(json_data.tumblelog.title).show()
@@ -116,7 +118,7 @@ class TumblrMusic
             this.offset += json_data.posts.length
 
     rerender: (tpl=null) ->
-        this._tpl = tpl if tpl
+        this._tpl = $(tpl).html() if tpl
         
         this._post_tpl = _template(this._tpl)
 
