@@ -21,9 +21,12 @@
     <% } %>\
 </div>';
   TumblrMusic = (function() {
-    function TumblrMusic(per_page, tag) {
+    function TumblrMusic(per_page, tag, remote_tumblr) {
       if (tag == null) {
         tag = null;
+      }
+      if (remote_tumblr == null) {
+        remote_tumblr = null;
       }
       this.per_page = per_page;
       this.tag = tag;
@@ -31,6 +34,7 @@
       this.offset = 0;
       this.el = null;
       this.has_more_posts = true;
+      this.remote_tumblr = remote_tumblr;
       this._watch_interval = null;
       if (typeof $ !== "undefined" && $ !== null) {
         this._init();
@@ -75,7 +79,7 @@
       return (b - 40 < $('#loader').height()) < 0;
     };
     TumblrMusic.prototype._fetch = function() {
-      var opts;
+      var json_data, opts;
       opts = {
         type: "audio",
         format: "json",
@@ -89,12 +93,18 @@
         this.xhr.abort();
       }
       this.show_loader();
-      this.xhr = $.getJSON('/api/read', opts, __bind(function(data) {
-        var json_data;
+      if (this.remote_tumblr) {
+        this.xhr = $.getJSON("" + this.remote_tumblr + "/api/read", opts, __bind(function(data) {}, this));
         json_data = JSON.parse(data.substr(22, data.length - 24));
         this._on_posts(json_data);
-        return this.xhr = null;
-      }, this));
+        this.xhr = null;
+      } else {
+        this.xhr = $.getJSON('/api/read', opts, __bind(function(data) {
+          json_data = JSON.parse(data.substr(22, data.length - 24));
+          this._on_posts(json_data);
+          return this.xhr = null;
+        }, this));
+      }
       return this.xhr.error(__bind(function(xhr, status, thrown) {
         this.show_loader('Problemas :(', 'error');
         return this._debug(xhr, status, thrown);
