@@ -1,6 +1,6 @@
 (function() {
   var GOOGLE_JQUERY_SRC, POST_TEMPLATE, TumblrMusic, per_page, tag, templateSettings, _template;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var __slice = Array.prototype.slice, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   templateSettings = {
     evaluate: /<%([\s\S]+?)%>/g,
     interpolate: /<%=([\s\S]+?)%>/g
@@ -38,6 +38,13 @@
         this._load_jquery();
       }
     }
+    TumblrMusic.prototype._debug = function() {
+      var what;
+      what = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      if (console && (console.log != null)) {
+        return console.log(what);
+      }
+    };
     TumblrMusic.prototype._load_jquery = function() {
       tag = document.createElement("script");
       tag.type = 'text/javascript';
@@ -89,7 +96,8 @@
         return this.xhr = null;
       }, this));
       return this.xhr.error(__bind(function(xhr, status, thrown) {
-        return this.show_loader('Problemas :(', 'error');
+        this.show_loader('Problemas :(', 'error');
+        return this._debug(xhr, status, thrown);
       }, this));
     };
     TumblrMusic.prototype._on_posts = function(json_data) {

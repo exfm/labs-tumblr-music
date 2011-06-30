@@ -36,6 +36,10 @@ class TumblrMusic
 
         if $? then this._init() else this._load_jquery()
     
+    _debug: (what...) ->
+        if console and console.log?
+            console.log what
+    
     _load_jquery: () ->
         tag = document.createElement "script"
         tag.type = 'text/javascript'
@@ -83,6 +87,8 @@ class TumblrMusic
         
         this.xhr.error (xhr, status, thrown) =>
             this.show_loader('Problemas :(', 'error')
+            this._debug(xhr, status, thrown)
+
 
     _on_posts: (json_data) ->
         if not this._post_tpl?
