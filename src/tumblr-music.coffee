@@ -76,8 +76,8 @@ class TumblrMusic
         if this.tag
             opts.tagged = this.tag
         
-        if this.xhr isnt null
-            this.xhr.abort()
+        # if this.xhr isnt null
+        #     this.xhr.abort()
         
         this.show_loader()
         if this.remote_tumblr

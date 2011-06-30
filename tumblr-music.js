@@ -89,9 +89,6 @@
       if (this.tag) {
         opts.tagged = this.tag;
       }
-      if (this.xhr !== null) {
-        this.xhr.abort();
-      }
       this.show_loader();
       if (this.remote_tumblr) {
         this.xhr = $.getJSON("" + this.remote_tumblr + "/api/read", opts, __bind(function(data) {
