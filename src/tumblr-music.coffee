@@ -18,7 +18,7 @@ POST_TEMPLATE = """
     </div>
     <% if (post['audio-caption']){ %>
     <div class="caption">
-        %laquo;<%= post['audio-caption'] %>&raquo;
+        &#8220;<%= post['audio-caption'] %>&#8221
     </div>
     <% } %>
     <div class="meta">
@@ -106,7 +106,7 @@ class TumblrMusic
 
         this.el.append new_html
 
-        if json_data.posts.length < batch_size
+        if json_data.posts.length < this.per_page
             this.hide_loader()
             clearInterval this._watch_interval
         else
