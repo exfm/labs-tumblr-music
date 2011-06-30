@@ -139,4 +139,5 @@
     return TumblrMusic;
   })();
   window.TumblrMusic = TumblrMusic;
+  window._template = _template;
 }).call(this);

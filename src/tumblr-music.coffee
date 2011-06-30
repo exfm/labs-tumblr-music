@@ -117,3 +117,4 @@ class TumblrMusic
 
 # export
 window.TumblrMusic = TumblrMusic
+window._template = _template
