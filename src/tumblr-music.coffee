@@ -50,7 +50,7 @@ class TumblrMusic
 
         this._watch_interval = setInterval this._check_fetch, 200
 
-        this.fetch()
+        this._fetch()
     
     _check_fetch: ->
         if this._near_bottom()

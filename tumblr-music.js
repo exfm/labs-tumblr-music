@@ -51,7 +51,7 @@
       $('body').append('<h1 id="tumblelog"/>', '<div id="music"/>', '<div id="loader" />');
       this.el = $('#music');
       this._watch_interval = setInterval(this._check_fetch, 200);
-      return this.fetch();
+      return this._fetch();
     };
     TumblrMusic.prototype._check_fetch = function() {
       if (this._near_bottom()) {
