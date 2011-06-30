@@ -11,14 +11,20 @@ GOOGLE_JQUERY_SRC = "https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.m
 per_page = 20
 tag = ""
 
-POST_TEMPLATE = '
+POST_TEMPLATE = """
 <div class="post" id="post-<%= id %>">
-    <% if (caption){ %>
+    <div class="player">
+        <%= post.audio-player %>
+    </div>
+    <% if (post['audio-caption']){ %>
     <div class="caption">
-        %laquo;<%= caption %>&raquo;
+        %laquo;<%= post['audio-caption'] %>&raquo;
     </div>
     <% } %>
-</div>'
+    <div class="meta">
+        <span class="title"><%= post['id3-title'] %></span> by <span class="artist"><%= post['id3-title'] %></span>
+    </div>
+</div>"""
 
 class TumblrMusic
     constructor: (per_page, tag=null) ->
@@ -67,6 +73,7 @@ class TumblrMusic
             format: "json"
             num: this.per_page
             start: this.offset
+            debug: 'true'
         
         if this.tag
             opts.tagged = this.tag
@@ -76,15 +83,14 @@ class TumblrMusic
         
         this.show_loader()
         this.xhr = $.get '/api/read', opts, (data) =>
-            json_data = JSON.parse(data.substr(22, (data.length - 24)))
+            json_data = JSON.parse(data)
             this._on_posts(json_data)
             this.xhr = null
         
         this.xhr.error (xhr, status, thrown) =>
             this.show_loader('Problemas :(', 'error')
             this._debug(xhr, status, thrown)
-
-
+    
     _on_posts: (json_data) ->
         if not this._post_tpl?
             this._post_tpl = _template POST_TEMPLATE
@@ -96,8 +102,7 @@ class TumblrMusic
         new_html = ''
         this._last_json = json_data
         for post in json_data.posts
-            this._debug post
-            new_html += this._post_tpl post
+            new_html += this._post_tpl post:post
 
         this.el.append new_html
 
@@ -112,6 +117,8 @@ class TumblrMusic
         
     hide_loader: () ->
         $('#loader').hide()
+
+
 
 # export
 window.TumblrMusic = TumblrMusic

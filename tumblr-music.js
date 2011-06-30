@@ -9,14 +9,7 @@
   GOOGLE_JQUERY_SRC = "https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js";
   per_page = 20;
   tag = "";
-  POST_TEMPLATE = '\
-<div class="post" id="post-<%= id %>">\
-    <% if (caption){ %>\
-    <div class="caption">\
-        %laquo;<%= caption %>&raquo;\
-    </div>\
-    <% } %>\
-</div>';
+  POST_TEMPLATE = "<div class=\"post\" id=\"post-<%= id %>\">\n    <div class=\"player\">\n        <%= post.audio-player %>\n    </div>\n    <% if (post['audio-caption']){ %>\n    <div class=\"caption\">\n        %laquo;<%= post['audio-caption'] %>&raquo;\n    </div>\n    <% } %>\n    <div class=\"meta\">\n        <span class=\"title\"><%= post['id3-title'] %></span> by <span class=\"artist\"><%= post['id3-title'] %></span>\n    </div>\n</div>";
   TumblrMusic = (function() {
     function TumblrMusic(per_page, tag) {
       if (tag == null) {
@@ -77,7 +70,8 @@
         type: "audio",
         format: "json",
         num: this.per_page,
-        start: this.offset
+        start: this.offset,
+        debug: 'true'
       };
       if (this.tag) {
         opts.tagged = this.tag;
@@ -88,7 +82,7 @@
       this.show_loader();
       this.xhr = $.get('/api/read', opts, __bind(function(data) {
         var json_data;
-        json_data = JSON.parse(data.substr(22, data.length - 24));
+        json_data = JSON.parse(data);
         this._on_posts(json_data);
         return this.xhr = null;
       }, this));
@@ -111,8 +105,9 @@
       _ref = json_data.posts;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         post = _ref[_i];
-        this._debug(post);
-        new_html += this._post_tpl(post);
+        new_html += this._post_tpl({
+          post: post
+        });
       }
       this.el.append(new_html);
       if (json_data.posts.length < batch_size) {
