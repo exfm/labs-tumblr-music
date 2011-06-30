@@ -113,6 +113,7 @@
       _ref = json_data.posts;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         post = _ref[_i];
+        this._debug(post);
         new_html += this._post_tpl(post);
       }
       this.el.append(new_html);

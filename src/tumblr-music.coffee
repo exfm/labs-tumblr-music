@@ -98,6 +98,7 @@ class TumblrMusic
         
         new_html = ''
         for post in json_data.posts
+            this._debug post
             new_html += this._post_tpl post
 
         this.el.append new_html
