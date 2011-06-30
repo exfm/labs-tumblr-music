@@ -108,3 +108,6 @@ class TumblrMusic
         
     hide_loader: () ->
         $('#loader').hide()
+
+# export
+window.TumblrMusic = TumblrMusic
